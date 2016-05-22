@@ -28,7 +28,9 @@ Now you have downloaded the raw data, unfortunately this raw data needs quite a 
 
 # 2) Scraping Survey Response Data / Project Grades #
 run the following command from the folder where you cloned this repository:
-> python SDG.py <location_of_students.csv>
+
+> python SDG.py location_of_students.csv
+
 if you move students.csv to the same folder as SDG.py, you can just run:
 > python SDG.py
 	
@@ -37,15 +39,21 @@ the data will be stored in "survey_data.csv" in the same folder as SDG.py.
 # 3) Event Entity Data #
 Analyzer.py has a bunch of options for building some data from EventEntity. The code itself isn't the cleanest I've written, but it should be extendable enough for most future uses.
 > "(1) Print pages at which students take a break"
+
 This prints (page, number of students) pairs for the pages at which students take a 2 hour or longer break before moving on to another page.
 > "(2) Print the time spent in the course by students who have completed the course and gotten their certificate"
+
 for each person who completed the course, it prints the amount of time between their first and last page view.
 > "(3) Print the points where students give up and leave the course"
+
 for each page in the course, this prints how many people left the course forever after visiting that page.
 > "(4) Print #OfWeeksAgoTheyRegistered:IntentAndCompletion pairs"
+
 Prints a list of weeksAgoRegistered : Number of Students who Completed the course pairs, only looking at students who said in the survey that they intended to complete the course.
 > "(5) Print #OfWeeksAgoTheyViewedTheLastAssessment:IntentAndCompletion pairs"
+
 Prints a list of weeksAgoOfLastPageView : Number of Students who Completed the course pairs, only looking at students who said in the survey that they intended to complete the course.
 This functionality is currently broken, and I'm not sure why. Remind me to fix this before I graduate if this is something we actually want going forward. 
 > "(6) Build big spreadsheet"
+
 "big spreadsheet" is currently the same as survey_data.csv but with a additional columns for the last page the user visited in the course, and the time between their first and last pageview. 
