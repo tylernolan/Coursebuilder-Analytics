@@ -21,7 +21,7 @@ class Student():
 			
 	@staticmethod
 	def spreadsheetHeader():
-		header = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14}\n".format("User ID", 
+		header = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}\n".format("User ID", 
 		"Reasons for Taking Course", 
 		"Completion Intent", 
 		"Lego Robots Experience", 
@@ -36,7 +36,7 @@ class Student():
 		"Project 6 Grade",
 		"Certificate Downloaded",
 		"Last Page Viewed",
-		"Time between from first to last pageview")
+		"Time between first and last pageview")
 		return header
 	def outputToMasterSheet(self):
 		self.findBreakpoints()
