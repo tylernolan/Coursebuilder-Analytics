@@ -196,7 +196,7 @@ class Student():
 		if self.lastPageViewed == None:
 			self.lastPageViewedLoc = None
 		else:
-			self.lastPageViewedLoc = self.lastPageViewed.location
+			self.lastPageViewedLoc = "Week : {} Page:{}".format(self.lastPageViewed.weekNum, self.lastPageViewed.location)
 		return breakpoints
 
 #class to organize and store events from eventEntity for reference by other parts of this application.
