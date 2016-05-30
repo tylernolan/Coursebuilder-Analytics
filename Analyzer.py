@@ -14,6 +14,7 @@ from collections import defaultdict
 BAD_IDS = [109826466069707651355, 103354212105644696927, 112641320891641105135, 103465685207495274873, 117467779573370717441, 100859882456081059235, 104857072559651500217, 101207345425454011502, 110913348700576779777]
 
 class Student():
+	
 	def __init__(self, event, surveyDict):
 		self.userID = event.userID
 		self.events = [event]
@@ -21,7 +22,7 @@ class Student():
 			
 	@staticmethod
 	def spreadsheetHeader():
-		header = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}\n".format("User ID", 
+		header = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21}\n".format("User ID", 
 		"Reasons for Taking Course", 
 		"Completion Intent", 
 		"Lego Robots Experience", 
@@ -36,12 +37,19 @@ class Student():
 		"Project 6 Grade",
 		"Certificate Downloaded",
 		"Last Page Viewed",
-		"Time between first and last pageview")
+		"Time between first and last pageview",
+		"Week 1 Started",
+		"Week 2 Started",
+		"Week 3 Started",
+		"Week 4 Started",
+		"Week 5 Started",
+		"Week 6 Started")
 		return header
 	def outputToMasterSheet(self):
 		self.findBreakpoints()
+		weeks = self.getWeeksViewed()
 		try:
-			return "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(self.userID,
+			return "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21}\n".format(self.userID,
 																  self.surveyData["reasons"],
 																  self.surveyData["completionIntent"],
 																  self.surveyData["legoRobots"],
@@ -56,11 +64,17 @@ class Student():
 																  self.surveyData["p6"],
 																  self.checkIfCertificateEarned(),
 																  self.lastPageViewedLoc,
-																  str(self.getTimeSpentInCourse()).replace(",",""))
+																  str(self.getTimeSpentInCourse()).replace(",",""),
+																  weeks[0] == 1,
+																  weeks[1] == 1,
+																  weeks[2] == 1,
+																  weeks[3] == 1,
+																  weeks[4] == 1,
+																  weeks[5] == 1)
 		except KeyError:
 			print "error"
 			return ""
-	#just a wrapper around sort to make it easier to refer to in other parts of the script. For some reason it would unsort itself on occasion so I explicitly call this before doing anything that required order in the list.	
+
 	def sortEventsByTimestamp(self):
 		self.events.sort(key= lambda event: event.timestamp)
 			
@@ -70,7 +84,12 @@ class Student():
 			if event.eventType == "tag-assessment":
 				ret.append(event)
 		return ret
-	
+	#uses the data from evententity to determine which weeks the student has viewed parts of.
+	def getWeeksViewed(self):
+		ret = [0 for x in range(6)]
+		for event in self.events:
+			ret[event.weekNum - 1] = 1
+		return ret
 	#could probably make all of this significantly faster by loading all 3 files into a dict, but it runs fast enough that it doesn't really matter either way.
 	#finds the desired data from the survey responses and loads them into a dictionary, which is stored by the object in SurveyData and returned.
 	def importSurveyResponses(self, surveyDict):
@@ -182,8 +201,10 @@ class Student():
 
 #class to organize and store events from eventEntity for reference by other parts of this application.
 class EventEntity():
+	weeks = ["unit=5", "unit=22", "unit=38", "unit=69", "unit=99", "unit=108"]
 	def __init__(self, line):
 		lines = line.split(",")
+		self.location = ""
 		try:
 			self.eventType = lines[0]
 		except:
@@ -219,9 +240,15 @@ class EventEntity():
 		elif self.eventType == "visit-page":
 			self.duration = attribs[1].split(",")[0]
 			self.location = attribs[3].split("/")[3].split('"')[0] #just more unreadable write-once string manipulation code.
-			
+
 		else:
 			pass
+		try:
+			self.weekNum = [1 if x in self.location else 0 for x in EventEntity.weeks].index(1) + 1
+		except ValueError:
+			self.weekNum = 0
+
+
 			
 #makes a dictionary from the data from the student datastore that was extracted with SDG.py.			
 def buildSurveyDict(studentIDs):

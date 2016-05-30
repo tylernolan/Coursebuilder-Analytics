@@ -56,4 +56,4 @@ Prints a list of weeksAgoOfLastPageView : Number of Students who Completed the c
 This functionality is currently broken, and I'm not sure why. Remind me to fix this before I graduate if this is something we actually want going forward. 
 > "(6) Build big spreadsheet"
 
-"big spreadsheet" is currently the same as survey_data.csv but with a additional columns for the last page the user visited in the course, and the time between their first and last pageview. 
+"big spreadsheet" is currently the same as survey_data.csv but with a additional columns for the last page the user visited in the course, the time between their first and last pageview, and whether they've viewed any pages for a given week. 
